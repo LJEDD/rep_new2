@@ -1,14 +1,47 @@
 package com.example.grutboot2.service;
 
+import com.example.grutboot2.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.example.grutboot2.model.User;
-import javax.validation.Valid;
+
 import java.util.List;
 
-public interface UserService {
+@Service
+@Transactional
+public class UserService {
 
-    List<User> getAllUsers ();
-    Object getUserById(long id);
-    void addUser(User user);
-    void removeUser(long id);
-    void updateUser(@Valid User user);
+
+
+    private final UserRepository userRepository;
+
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+
+
+    public User saveUser(User user)
+    {
+        return userRepository.save(user);
+    }
+
+    public void deleteById(Long id)
+    {
+        userRepository.deleteById(id);
+    }
+
+
+
 }
